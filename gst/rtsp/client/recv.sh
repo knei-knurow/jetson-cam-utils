@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Usage: ./recv.sh location"
+echo "Usage: ./recv.sh <location>"
 echo "location example: rtsp://192.168.1.100:8586/test"
 
 gst-launch-1.0 \
