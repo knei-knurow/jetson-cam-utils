@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Usage: ./host.sh port0 port1"
+echo "Usage: ./host.sh addr port0 port1"
 
 gst-launch-1.0 \
      nvarguscamerasrc \
@@ -8,7 +8,7 @@ gst-launch-1.0 \
     ! nvv4l2h264enc insert-sps-pps=true \
     ! h264parse \
     ! rtph264pay pt=96  \
-    ! tcpserversink port=$1  -e &
+    ! tcpserversink host=$1 port=$2  -e &
 
 gst-launch-1.0 \
      nvarguscamerasrc \
@@ -17,5 +17,5 @@ gst-launch-1.0 \
     ! nvv4l2h264enc insert-sps-pps=true \
     ! h264parse \
     ! rtph264pay pt=96  \
-    ! tcpserversink port=$1 &
+    ! tcpserversink host=$1 port=$3 &
 
