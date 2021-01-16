@@ -6,6 +6,8 @@ The host is always a NVidia L4T device with Accelerated Gstreamer. The scripts f
 
 Manual of each script can be printed by launching it.
 
+The UDP stream is designed for simultaneous transmission of video from two CSI cameras.
+
 Created on NVidia Jetson Nano.
 
 
