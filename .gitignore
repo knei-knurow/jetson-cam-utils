@@ -1,1 +1,6 @@
-*.libs
+gst/rtsp/server/.libs
+gst/rtsp/server/test-launch
+
+gst/udp/server/.libs
+gst/udp/server/.libs
+
