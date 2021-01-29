@@ -5,3 +5,8 @@ gst/udp/server/.libs
 gst/udp/server/.libs
 
 opencv/csi/csi
+
+*.swp
+*.sw*
+*.swd
+*.bmp

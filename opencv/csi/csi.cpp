@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
+#include <unistd.h>
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
+#include <opencv2/imgcodecs.hpp>
 
 using namespace std;
 
@@ -32,24 +34,23 @@ class GStCamera
         
         stringstream ss;
 
-        ss  << "nvarguscamerasrc sensor=id="
+        ss  << "nvarguscamerasrc sensor-id="
             << id
-            << " \'video/x-raw(memory:NVMM), format="
+            << " ! video/x-raw(memory:NVMM), format="
             << srcFormat
             << ", width="
             << width
             << ", height="
             << height
-            << "\' ! nvvidconv ! \'video/x-raw, width="
+            << " ! nvvidconv ! video/x-raw, width="
             << width
             << ", height="
             << height
-            << ", format=(string)"
+            << ", format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)"
             << sinkFormat
-            << "! appsink ";
+            << " ! videoconvert ! appsink ";
         
-        GStString = ss.str();
-
+        GStString = ss.str();      
         this->cap = cv::VideoCapture(GStString);
 	}
 };
@@ -58,6 +59,18 @@ class GStCamera
 
 int main(void)
 {
-    GStCamera cam(0, 1920, 1080, 30, "BGR", "NV12");
 
-}
+    cv::Mat img;
+
+    GStCamera cam(0, 1920, 1080, 30, "BGR", "NV12");   
+
+    cv::VideoCapture vc = cam.cap;    
+
+    sleep(5);    
+
+    vc >> img;
+
+    cv::imwrite("read.bmp", img);
+    vc.release();
+    
+}   
