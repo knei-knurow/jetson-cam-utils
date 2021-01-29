@@ -47,6 +47,8 @@ class GStCamera
             << ", format=(string)"
             << sinkFormat
             << "! appsink ";
+        
+        GSTstring = ss.str();
 
         this->cap = cv::VideoCapture(GStString);
 	}
