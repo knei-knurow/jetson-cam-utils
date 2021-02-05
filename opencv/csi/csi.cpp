@@ -1,13 +1,11 @@
 #include "csi.hpp"
 #define CAM_APPSINK (1<<0)
-#define CAM_UDP     (1<<1)
-#define CAM_RTSP    (1<<2)
-#define CAM_TIMEOV  (1<<3)
-#define CAM_ID_OV   (1<<4)
-
+#define CAM_UDPSINK (1<<1)
+#define CAM_TIMEOVERLAY (1<<2)
+#define CAM_IDOVERLAY (1<<3)
 using namespace std;
 
-GStCamera::GStCamera(unsigned int id, unsigned int width, unsigned int height, unsigned int framerate, unsigned int flags, string sinkFormat = "BGR", string srcFormat="NV12")
+GStCamera::GStCamera(unsigned int id, unsigned int width, unsigned int height, unsigned int framerate, unsigned int flags, string sinkFormat = "BGR", string udpParams="")
 {
     this->flags = flags;
     this->id = id;
@@ -15,26 +13,64 @@ GStCamera::GStCamera(unsigned int id, unsigned int width, unsigned int height, u
     this->height = height;
     this->framerate = framerate;
     this->sinkFmt = sinkFormat;
-    this->srcFmt = srcFormat;
-        
+
     stringstream ss;
+    stringstream overlays_ss;
         
-    ss  << "nvarguscamerasrc sensor-id="
-        << id
-        << " ! video/x-raw(memory:NVMM), format="
-        << srcFormat
-        << ", width="
-        << width
-        << ", height="
-        << height
-        << " ! nvvidconv ! video/x-raw, width="
-        << width
-        << ", height="
-        << height
-        << ", format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)"
-        << sinkFormat
-        << " ! videoconvert ! appsink ";
+    if(flags & (CAM_TIMEOVERLAY))
+    {
+        overlays_ss << " ! timeoverlay " ;
+    }
     
+    if(flags & (CAM_IDOVERLAY))
+    {
+        
+
+        overlays_ss << " ! textoverlay text =" 
+                    << id
+                    << " valigment=top haligment=top font-desc=\"Sans, 72\"";
+    }
+
+
+    string overlays = overlays_ss.str();
+
+    
+    if(flags & (CAM_APPSINK | CAM_UDPSINK))
+    {
+        ss  <<  "nvarguscamerasrc sensor-id="
+            << id
+            << " ! video/x-raw(memory:NVMM), format=NV12, width="
+            << width
+            << ", height="
+            << height
+            << " tee name=t t. ! nvvidconv ! video/x-raw, width="
+                << width
+                << ", height="
+                << height
+                << ", format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)"
+                << sinkFormat
+                << " ! videoconvert "
+                << overlays
+                << " ! appsink "
+            << "t. ! nvv4l2h264enc insert-sps-pps=true ! h264parse ! rtph264pay pt=96 ! udpsink "
+            << udpParams;
+    }       
+    else if(flags & CAM_APPSINK)
+    {
+       ss   << "nvarguscamerasrc sensor-id="
+            << id
+            << " ! video/x-raw(memory:NVMM), format=NV12, width="
+            << width
+            << ", height="
+            << height
+            << " ! nvvidconv ! video/x-raw, width="
+            << width
+            << ", height="
+            << height
+            << ", format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)"
+            << sinkFormat
+            << " ! videoconvert ! appsink ";
+    }
     GStString = ss.str();      
     this->cap = cv::VideoCapture(GStString);
 }   

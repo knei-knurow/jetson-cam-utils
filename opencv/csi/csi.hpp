@@ -16,13 +16,12 @@ class GStCamera
     unsigned int width;
     unsigned int height;
     unsigned int framerate;
-    string srcFmt;
     string sinkFmt;
     
     string GStString;
     cv::VideoCapture cap;
 
-    GStCamera(unsigned int id, unsigned int width, unsigned int height, unsigned int framerate, unsigned int flags, string sinkFormat, string srcFormat);    
+    GStCamera(unsigned int id, unsigned int width, unsigned int height, unsigned int framerate, unsigned int flags, string sinkFormat, string udpParams); 
 
 };
 
