@@ -5,6 +5,22 @@
 #define CAM_IDOVERLAY (1<<3)
 using namespace std;
 
+
+string GStCamera::UDPString(string recvIP, int port)
+{
+    stringstream ss;
+    
+    ss  << "host="
+        << recvIP
+        << " port="
+        << port;
+
+    return ss.str();
+
+}
+
+
+
 GStCamera::GStCamera(unsigned int id, unsigned int width, unsigned int height, unsigned int framerate, unsigned int flags, string sinkFormat = "BGR", string udpParams="")
 {
     this->flags = flags;
