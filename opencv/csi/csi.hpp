@@ -5,6 +5,11 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/imgcodecs.hpp>
 
+#define CAM_APPSINK (1<<0)
+#define CAM_UDPSINK (1<<1)
+#define CAM_TIMEOVERLAY (1<<2)
+#define CAM_IDOVERLAY (1<<3)
+
 using namespace std;
 
 class GStCamera
