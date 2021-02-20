@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     std::string portR = argv[3];
 
     
-    stringstream ss;
+    std::stringstream ss;
     ss << "udp://" << host << ":" << portL; 
     std::string addrL = ss.str(); //create string with address for left cam src
     ss.str(""); //clear stringstream
@@ -27,8 +27,12 @@ int main(int argc, char *argv[])
     ss << "udp://" << host << ":" << portR;
     std::string addrR = ss.str(); //create string with address for right cam src 
 
+
+    std::cout << "Connecting..." << std::endl;
     cv::VideoCapture capL(addrL);
+    std::cout << "Connected to left. Connecting to right." << std::endl;
     cv::VideoCapture capR(addrR);
+    std::cout << "Connection successful. " << std::endl;
 
     cv::Mat frameL;
     cv::Mat frameR;
@@ -46,7 +50,7 @@ int main(int argc, char *argv[])
         if(!frameR.empty()) cv::imshow("right", frameR);
         else std::cout << "RIGHT FRAME BLANK! " << std:: endl;
         
-        char ch = cv::waitKey(1)
+        char ch = cv::waitKey(1);
         if(ch == 'q') break;
     } 
     
