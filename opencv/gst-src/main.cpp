@@ -5,12 +5,13 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
+#include "gst_src.hpp"
 
 using namespace std;
 
 int main(void)
 {
-    GStCamera cam(0, 1920, 1080, 30, (CAM_APPSINK | CAM_TIMEOVERLAY) "BGR");
+    GStCamera cam(0, 1920, 1080, 30, CAM_APPSINK | CAM_TIMEOVERLAY, "BGR", "");
     cv::VideoCapture vc = cam.cap;
 
     cv::Mat frame;

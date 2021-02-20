@@ -1,4 +1,4 @@
-#include "csi.hpp"
+#include "gst_src.hpp"
 #define CAM_APPSINK (1<<0)
 #define CAM_UDPSINK (1<<1)
 #define CAM_TIMEOVERLAY (1<<2)
