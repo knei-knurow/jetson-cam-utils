@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -26,7 +28,7 @@ class GStCamera
     string GStString;
     cv::VideoCapture cap;
 
-    GStCamera(unsigned int id, unsigned int width, unsigned int height, unsigned int framerate, unsigned int flags, string sinkFormat, string udpParams);
+    GStCamera(unsigned int id, unsigned int width, unsigned int height, unsigned int framerate, unsigned int flags, string sinkFormat = "BGR", string udpParams="");
 
     string UDPString(string recvIP, int port);
 
