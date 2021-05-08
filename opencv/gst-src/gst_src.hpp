@@ -28,7 +28,7 @@ class GStCamera
     string GStString;
     cv::VideoCapture cap;
 
-    GStCamera(unsigned int id, unsigned int width, unsigned int height, unsigned int framerate, unsigned int flags, string sinkFormat = "BGR", string udpParams="");
+    GStCamera(unsigned int id, unsigned int width, unsigned int height, unsigned int framerate, unsigned int flags, string sinkFormat, string udpParams);
 
     string UDPString(string recvIP, int port);
 
